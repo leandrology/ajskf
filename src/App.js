@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import useContentful from "./useContentful";
+import { useEffect, useState } from "react";
+import Mobile from "./Mobile";
 
 function App() {
+  const [view, setView] = useState([]);
+  const { getHomeView } = useContentful();
+
+  useEffect(() => {
+    getHomeView().then((response) => {
+      setView(response);
+    });
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {view.map((home, index) => (
+        <Mobile key={index} home={home} />
+      ))}
+      {/* {view.map((home, index) => (
+        <ul key={index}>
+          <li>{home.backgroundImage.fields.file.url}</li>
+          <li>{home.logo.fields.file.url}</li>
+        </ul>
+      ))} */}
+    </>
   );
 }
 
